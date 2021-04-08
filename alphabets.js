@@ -1212,17 +1212,35 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
 
     class Monster{
+        constructor(){
+            let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('')
+            let weaker = new Weaknesses(letters[Math.floor(Math.random()*letters.length)],letters[Math.floor(Math.random()*letters.length)])
+            this.weaknesses = [...weaker.weaknesses]
+            this.type = (weaker.type1+weaker.type2)
+            this.speed = 100 +((Math.random()-.5)*100)
+            this.attack = 100 +((Math.random()-.5)*100)
+            this.defense = 100 +((Math.random()-.5)*100)
+            this.health = Math.round(400 +((Math.random()-.5)*200))
+            this.maxhealth = this.health
+
+        }
+        draw(){
+            canvas_context.fillStyle = "white"
+            canvas_context.font = "30px comic sans ms"
+            canvas_context.fillText(this.type, 200+(monsters.indexOf(this)*600),200)
+            canvas_context.fillText("Speed: " + Math.round(this.speed), 200+(monsters.indexOf(this)*600),240)
+            canvas_context.fillText("Attack: " + Math.round(this.attack), 200+(monsters.indexOf(this)*600),280)
+            canvas_context.fillText("Defense: " + Math.round(this.defense), 200+(monsters.indexOf(this)*600),320)
+            canvas_context.fillText("Health: " + Math.round(this.health)+ "/" + this.maxhealth, 200+(monsters.indexOf(this)*600),360)
+        }
 
     }
 
-
-
-    for(let t = 0;t<100;t++){
-
-        let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('')
-        let weaker = new Weaknesses(letters[Math.floor(Math.random()*letters.length)],letters[Math.floor(Math.random()*letters.length)])
-    }
-
+    let monsters = []
+    let monster1 = new Monster()
+    monsters.push(monster1)
+    let monster2 = new Monster()
+    monsters.push(monster2)
 
 
     function main() {
@@ -1230,5 +1248,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
         gamepadAPI.update() //checks for button presses/stick movement on the connected controller)
         // game code goes here
         // grid.draw()
+        for(let t = 0;t<monsters.length;t++){
+            monsters[t].draw()
+        }
     }
 })
